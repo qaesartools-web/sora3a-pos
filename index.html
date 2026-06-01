@@ -494,12 +494,11 @@ const defaultMenu = [
 ];
 
 // Load saved menu
-let menu = (() => {
-  try { const s=localStorage.getItem('pos_menu'); return s?JSON.parse(s):JSON.parse(JSON.stringify(defaultMenu)); }
-  catch(e) { return JSON.parse(JSON.stringify(defaultMenu)); }
-})();
+let menu = JSON.parse(JSON.stringify(defaultMenu)); // loaded per restaurant after login
 
-function saveMenu() { localStorage.setItem('pos_menu', JSON.stringify(menu)); }
+function menuKey() { return 'pos_menu_' + (restData?.id || 'default'); }
+function saveMenu() { localStorage.setItem(menuKey(), JSON.stringify(menu)); }
+function loadMenu() { try { const s=localStorage.getItem(menuKey()); if(s) menu=JSON.parse(s); } catch(e){} }
 
 // ── STATE ──
 let restData=null, captains=[], orders=[], unsubs=[];
@@ -602,6 +601,7 @@ function enterApp() {
   document.getElementById('loginPage').style.display='none';
   document.getElementById('appPage').className='show';
   document.getElementById('restName').textContent=restData.name||'المطعم';
+  menu=JSON.parse(JSON.stringify(defaultMenu)); loadMenu();
   renderMenu(); renderCart();
   startListeners();
   initMenuManage();
