@@ -289,6 +289,17 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
 .miacts{display:flex;flex-direction:column;gap:4px;}
 .mibtn{border:none;border-radius:6px;padding:5px 8px;color:#fff;font-size:11px;cursor:pointer;}
 
+/* DESKTOP NAV */
+.desktop-nav{display:none;background:var(--panel2);border-bottom:1px solid var(--line);padding:0 16px;gap:4px;}
+@media(min-width:768px){
+  .desktop-nav{display:flex !important;}
+  .bnav{display:none;}
+  .pos{height:calc(100vh - 100px);}
+}
+.dnb{padding:12px 16px;background:transparent;border:none;border-bottom:3px solid transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s;white-space:nowrap;}
+.dnb.on{color:var(--orange);border-bottom-color:var(--orange);}
+.dnb:hover{color:var(--text);}
+
 /* TOAST */
 .toast{position:fixed;bottom:62px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--panel);border:1px solid var(--green);color:var(--green);border-radius:12px;padding:10px 18px;font-size:13px;font-weight:700;z-index:999;transition:transform .3s;white-space:nowrap;}
 .toast.on{transform:translateX(-50%) translateY(0);}
@@ -335,6 +346,12 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
     <button class="lout" onclick="doLogout()">خروج</button>
   </div>
 
+  <div class="desktop-nav" id="desktopNav">
+    <button class="dnb on" onclick="goTab('cashier')">🧾 الكاشير</button>
+    <button class="dnb" onclick="goTab('orders')">📋 الطلبات</button>
+    <button class="dnb" onclick="goTab('reports')">📊 التقارير</button>
+    <button class="dnb" onclick="goTab('menu')">⚙️ المنيو</button>
+  </div>
   <div class="content">
     <!-- CASHIER -->
     <div class="screen on" id="cashierScreen">
@@ -1207,6 +1224,11 @@ window.delItem=(ci,pi)=>{
 window.goTab=tab=>{
   ['cashier','orders','reports','menu'].forEach(t=>document.getElementById(t+'Screen').classList.toggle('on',t===tab));
   ['nb1','nb2','nb3','nb4'].forEach((id,i)=>document.getElementById(id).classList.toggle('on',i===['cashier','orders','reports','menu'].indexOf(tab)));
+  // Sync desktop nav
+  document.querySelectorAll('.dnb').forEach(b=>b.classList.remove('on'));
+  const tabs=['cashier','orders','reports','menu'];
+  const dbtns=document.querySelectorAll('.dnb');
+  if(dbtns[tabs.indexOf(tab)])dbtns[tabs.indexOf(tab)].classList.add('on');
   if(tab==='reports')renderRep();
   if(tab==='menu')initMenuManage();
 };
