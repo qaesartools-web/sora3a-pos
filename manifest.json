@@ -1,14 +1,13 @@
 {
-  "name": "سرعة - كاشير المطعم",
+  "name": "سرعة — كاشير المطعم",
   "short_name": "كاشير",
   "description": "نظام كاشير مطعم سرعة",
-  "lang": "ar",
-  "dir": "rtl",
+  "lang": "ar", "dir": "rtl",
   "start_url": "/sora3a-pos/",
   "scope": "/sora3a-pos/",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#0d0f12",
+  "background_color": "#0a0a0f",
   "theme_color": "#ff6b3d",
   "icons": [
     {"src": "icon.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
