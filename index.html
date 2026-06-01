@@ -661,14 +661,6 @@ window.doInstall=()=>{
 // ── SPLASH ──
 window.addEventListener('fbReady',()=>{
   updateOnline();
-  // Show splash for 2.5 seconds
-  setTimeout(()=>{
-    document.getElementById('splash').classList.add('hide');
-    setTimeout(()=>{
-      document.getElementById('splash').style.display='none';
-      document.getElementById('loginPage').style.display='flex';
-    },600);
-  },2500);
 
   const fb=window._fb;
   fb.onAuthStateChanged(fb.auth,async user=>{
@@ -684,13 +676,36 @@ window.addEventListener('fbReady',()=>{
       }catch(e){console.error(e);await fb.signOut(fb.auth);}
     }else{
       restData=null;unsubs.forEach(u=>u&&u());unsubs=[];
-      document.getElementById('loginPage').style.display='flex';
-      document.getElementById('appPage').className='';
-      const btn=document.getElementById('loginBtn');btn.innerHTML='🔐 دخول';btn.disabled=false;
+      showLoginPage();
     }
   });
   document.getElementById('inPass').addEventListener('keypress',e=>{if(e.key==='Enter')doLogin();});
 });
+
+function showLoginPage(){
+  // Hide splash first
+  document.getElementById('splash').classList.add('hide');
+  setTimeout(()=>{
+    document.getElementById('splash').style.display='none';
+  },600);
+  document.getElementById('loginPage').style.display='flex';
+  document.getElementById('appPage').className='';
+  const btn=document.getElementById('loginBtn');
+  if(btn){btn.innerHTML='🔐 دخول';btn.disabled=false;}
+}
+
+// Show splash for 2.5s then show login if not logged in
+setTimeout(()=>{
+  if(document.getElementById('splash').style.display!=='none'){
+    document.getElementById('splash').classList.add('hide');
+    setTimeout(()=>{
+      document.getElementById('splash').style.display='none';
+      if(document.getElementById('loginPage').style.display==='none'&&document.getElementById('appPage').className===''){
+        document.getElementById('loginPage').style.display='flex';
+      }
+    },600);
+  }
+},2500);
 
 window.doLogin=async()=>{
   const email=document.getElementById('inEmail').value.trim().toLowerCase();
@@ -725,6 +740,8 @@ window.doLogout=async()=>{
 };
 
 function enterApp(){
+  document.getElementById('splash').classList.add('hide');
+  setTimeout(()=>{document.getElementById('splash').style.display='none';},600);
   document.getElementById('loginPage').style.display='none';
   document.getElementById('appPage').className='show';
   document.getElementById('restName').textContent=restData.name||'المطعم';
