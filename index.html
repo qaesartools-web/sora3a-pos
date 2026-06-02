@@ -1107,21 +1107,35 @@ async function finalOrder(type,captain,custInfo){
   let salonNum=null;
   if(type==='salon'){salonNum=getNextSalonNum();}
 
-  // Save to Firebase for delivery only
-  if(type==='delivery'&&restData&&captain){
+  // Save ALL order types to Firebase
+  if(restData){
     try{
-      await window._fb.addDoc(window._fb.collection(window._fb.db,'orders'),{
+      const notes=cart.map(c=>`${c.name}(${c.variant})×${c.qty}`).join(', ');
+      const orderData={
         restaurantId:restData.id,restaurantName:restData.name,
-        customer:custInfo.name,phone:custInfo.phone,address:custInfo.addr,
-        value:total,fee:custInfo.fee||5000,
-        notes:cart.map(c=>`${c.name}(${c.variant})×${c.qty}`).join(', '),
-        commission:Math.round(total*.1),
-        captainId:captain.id,captainName:captain.name,
-        orderType:'delivery',
-        status:'pending',createdAt:t,createdAtMs:Date.now(),
-        timeline:[{status:'pending',time:t,text:'تم إنشاء الطلب — دلفري'}],
-        deliveryProof:null,rejectedBy:[]
-      });
+        orderType:type,
+        value:total,notes,
+        status:type==='delivery'?'pending':'delivered',
+        createdAt:t,createdAtMs:Date.now(),
+        timeline:[{status:type==='delivery'?'pending':'delivered',time:t,text:'تم إنشاء الطلب'}],
+      };
+      if(type==='delivery'&&captain){
+        orderData.customer=custInfo.name;
+        orderData.phone=custInfo.phone;
+        orderData.address=custInfo.addr;
+        orderData.fee=custInfo.fee||5000;
+        orderData.captainId=captain.id;
+        orderData.captainName=captain.name;
+        orderData.commission=Math.round(total*.1);
+        orderData.deliveryProof=null;
+        orderData.rejectedBy=[];
+      }else if(type==='salon'){
+        orderData.salonNum=salonNum;
+        orderData.customer='صالة #'+salonNum;
+      }else if(type==='takeaway'){
+        orderData.customer='سفري';
+      }
+      await window._fb.addDoc(window._fb.collection(window._fb.db,'orders'),orderData);
     }catch(e){console.error(e);}
   }
 
