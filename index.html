@@ -14,17 +14,65 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0a0a0f; --panel:#111118; --panel2:#18181f; --line:#252530;
-  --text:#eeeef5; --muted:#666680; --orange:#ff6b3d; --orange2:#ffaa3d;
-  --green:#22c55e; --red:#ef4444; --blue:#3b82f6; --yellow:#fbbf24; --purple:#a855f7;
+  --bg:#f5f5f5; --panel:#ffffff; --panel2:#fff5f0; --line:#ffe0d6;
+  --text:#1a1a1a; --muted:#888888; --orange:#ff6b3d; --orange2:#ff9f3d;
+  --green:#16a34a; --red:#e11d48; --blue:#2563eb; --yellow:#d97706; --purple:#7c3aed;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;}
 
+
+/* ── THEMES ── */
+.theme-dark{
+  --bg:#0a0a0f; --panel:#111118; --panel2:#18181f; --line:#252530;
+  --text:#eeeef5; --muted:#666680; --orange:#ff6b3d; --orange2:#ffaa3d;
+  --green:#22c55e; --red:#ef4444; --blue:#3b82f6; --yellow:#fbbf24; --purple:#a855f7;
+}
+.theme-light{
+  --bg:#f5f5f5; --panel:#ffffff; --panel2:#fff5f0; --line:#ffe0d6;
+  --text:#1a1a1a; --muted:#888888; --orange:#ff6b3d; --orange2:#ff9f3d;
+  --green:#16a34a; --red:#e11d48; --blue:#2563eb; --yellow:#d97706; --purple:#7c3aed;
+}
+.theme-ocean{
+  --bg:#0d1b2a; --panel:#112236; --panel2:#0d2040; --line:#1e3a5f;
+  --text:#e0f0ff; --muted:#4a7fa5; --orange:#4fc3f7; --orange2:#80deea;
+  --green:#4caf50; --red:#ef5350; --blue:#29b6f6; --yellow:#ffd54f; --purple:#ce93d8;
+}
+.theme-green{
+  --bg:#f0fdf4; --panel:#ffffff; --panel2:#dcfce7; --line:#bbf7d0;
+  --text:#1a1a1a; --muted:#666; --orange:#16a34a; --orange2:#4ade80;
+  --green:#15803d; --red:#e11d48; --blue:#2563eb; --yellow:#d97706; --purple:#7c3aed;
+}
+.theme-purple{
+  --bg:#faf5ff; --panel:#ffffff; --panel2:#f3e8ff; --line:#e9d5ff;
+  --text:#1a1a1a; --muted:#777; --orange:#7c3aed; --orange2:#a855f7;
+  --green:#16a34a; --red:#e11d48; --blue:#2563eb; --yellow:#d97706; --purple:#6d28d9;
+}
+.theme-night{
+  --bg:#070d1a; --panel:#0d1630; --panel2:#0a1228; --line:#1e3a5f;
+  --text:#cdd9f0; --muted:#4a6080; --orange:#60a5fa; --orange2:#93c5fd;
+  --green:#4ade80; --red:#f87171; --blue:#3b82f6; --yellow:#fbbf24; --purple:#c084fc;
+}
+
+/* Theme switcher */
+.theme-switcher{position:fixed;top:60px;left:10px;z-index:8000;display:none;}
+.ts-btn{width:40px;height:40px;border-radius:50%;border:2px solid var(--line);background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2);}
+.ts-panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:6px;display:none;box-shadow:0 8px 30px rgba(0,0,0,.3);min-width:160px;}
+.ts-panel.open{display:block;}
+.ts-title{font-size:11px;color:var(--muted);margin-bottom:8px;font-weight:700;}
+.ts-row{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
+.tc{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .2s;}
+.tc.on{border-color:var(--text);transform:scale(1.2);}
+.ts-sep{border-top:1px solid var(--line);margin:8px 0;}
+.ts-label{font-size:11px;color:var(--muted);margin-bottom:6px;}
+.ts-toggle{display:flex;background:var(--panel2);border-radius:20px;padding:2px;}
+.ts-toggle-btn{flex:1;padding:5px 8px;border-radius:18px;border:none;background:transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:11px;font-weight:700;cursor:pointer;}
+.ts-toggle-btn.on{background:var(--orange);color:#fff;}
+
 /* ── SPLASH SCREEN ── */
 #splash{
   position:fixed;inset:0;z-index:9999;
-  background:linear-gradient(135deg,#0a0a0f 0%,#1a0a05 50%,#0a0a0f 100%);
+  background:linear-gradient(135deg,#fff5f0 0%,#ffe0d6 50%,#fff5f0 100%);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   transition:opacity .6s ease;
 }
@@ -47,10 +95,11 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
   font-size:36px;font-weight:900;
   background:linear-gradient(135deg,var(--orange),var(--orange2));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  color:var(--orange);
   animation:fadeUp .8s ease both;
 }
 .splash-sub{
-  font-size:14px;color:var(--muted);margin-top:8px;
+  font-size:14px;color:#666;margin-top:8px;
   animation:fadeUp .8s ease .2s both;
 }
 .splash-dots{
@@ -75,8 +124,8 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
 /* ── LOGIN ── */
 #loginPage{
   height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
-  background:radial-gradient(ellipse at 20% 50%,rgba(255,107,61,.12),transparent 60%),
-             radial-gradient(ellipse at 80% 50%,rgba(255,170,61,.08),transparent 60%);
+  background:radial-gradient(ellipse at 20% 50%,rgba(255,107,61,.15),transparent 60%),
+             radial-gradient(ellipse at 80% 50%,rgba(255,170,61,.1),transparent 60%);
 }
 .lbox{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:32px 24px;width:100%;max-width:380px;box-shadow:0 30px 80px rgba(0,0,0,.5);}
 .licon{width:64px;height:64px;background:linear-gradient(135deg,var(--orange),var(--orange2));border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 16px;box-shadow:0 8px 30px rgba(255,107,61,.4);}
@@ -92,14 +141,14 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
 /* ── APP ── */
 #appPage{display:none;height:100vh;flex-direction:column;}
 #appPage.show{display:flex;}
-.topbar{background:var(--panel);border-bottom:1px solid var(--line);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.topbar{background:#ffffff;border-bottom:2px solid var(--line);box-shadow:0 2px 10px rgba(255,107,61,.1);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .tlogo{font-size:17px;font-weight:900;color:var(--orange);}
 .trest{font-size:11px;color:var(--muted);}
 .cdot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-left:4px;}
 .cdot.off{background:var(--red);}
 .lout{background:transparent;border:1px solid var(--line);color:var(--red);padding:5px 10px;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:11px;}
 .content{flex:1;overflow:hidden;display:flex;flex-direction:column;}
-.bnav{background:var(--panel);border-top:1px solid var(--line);display:flex;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom);}
+.bnav{background:#ffffff;border-top:2px solid var(--line);box-shadow:0 -2px 10px rgba(255,107,61,.08);display:flex;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom);}
 .nb{flex:1;padding:9px 4px;background:transparent;border:none;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;}
 .nb.on{color:var(--orange);}
 .ni{font-size:18px;}
@@ -117,7 +166,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
 .prods::-webkit-scrollbar{width:0;}
 .prod{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .15s;position:relative;}
 .prod:active{transform:scale(.96);}
-.pimg{height:75px;background:linear-gradient(135deg,#1a0a05,#2d1208);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;}
+.pimg{height:75px;background:linear-gradient(135deg,#ffe0d6,#ffd0b8);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;}
 .pimg img{width:100%;height:100%;object-fit:cover;}
 .pinfo{padding:7px 8px;}
 .pname{font-size:11px;font-weight:700;margin-bottom:2px;line-height:1.3;}
@@ -291,7 +340,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
 .mibtn{border:none;border-radius:6px;padding:5px 8px;color:#fff;font-size:11px;cursor:pointer;}
 
 /* DESKTOP NAV */
-.desktop-nav{display:none;background:var(--panel2);border-bottom:1px solid var(--line);padding:0 16px;gap:4px;}
+.desktop-nav{display:none;background:#fff5f0;border-bottom:2px solid var(--line);padding:0 16px;gap:4px;}
 @media(min-width:768px){
   .desktop-nav{display:flex !important;}
   .bnav{display:none;}
@@ -320,6 +369,28 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
   </div>
 </div>
 
+
+<!-- THEME SWITCHER -->
+<div class="theme-switcher" id="themeSwitcher">
+  <button class="ts-btn" onclick="toggleTsPanel()">🎨</button>
+  <div class="ts-panel" id="tsPanel">
+    <div class="ts-title">🎨 لون التطبيق</div>
+    <div class="ts-row">
+      <div class="tc on" id="tc-dark" style="background:linear-gradient(135deg,#0a0a0f,#ff6b3d);" onclick="setTheme('dark')" title="داكن برتقالي"></div>
+      <div class="tc" id="tc-light" style="background:linear-gradient(135deg,#fff,#ff6b3d);" onclick="setTheme('light')" title="أبيض برتقالي"></div>
+      <div class="tc" id="tc-ocean" style="background:linear-gradient(135deg,#0d1b2a,#4fc3f7);" onclick="setTheme('ocean')" title="المحيط"></div>
+      <div class="tc" id="tc-green" style="background:linear-gradient(135deg,#f0fdf4,#16a34a);" onclick="setTheme('green')" title="أخضر"></div>
+      <div class="tc" id="tc-purple" style="background:linear-gradient(135deg,#faf5ff,#7c3aed);" onclick="setTheme('purple')" title="بنفسجي"></div>
+      <div class="tc" id="tc-night" style="background:linear-gradient(135deg,#070d1a,#60a5fa);" onclick="setTheme('night')" title="منتصف الليل"></div>
+    </div>
+    <div class="ts-sep"></div>
+    <div class="ts-label">فاتح / داكن</div>
+    <div class="ts-toggle">
+      <button class="ts-toggle-btn" id="tl-dark" onclick="setTheme('dark')">🌙 داكن</button>
+      <button class="ts-toggle-btn on" id="tl-light" onclick="setTheme('light')">☀️ فاتح</button>
+    </div>
+  </div>
+</div>
 <div id="offBanner">⚠️ غير متصل بالإنترنت — يعمل offline</div>
 <button id="installBtn" onclick="doInstall()">📲 تثبيت التطبيق</button>
 
@@ -503,15 +574,15 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
     <div class="ctit">🚀 ترحيل الطلب</div>
     <div class="csub">اختر نوع الطلب</div>
     <div class="sumbox" id="sumBox"></div>
-    <button class="otype" style="border-color:rgba(168,85,247,.4);" onclick="pickType('salon')">
+    <button class="otype" style="border-color:rgba(255,107,61,.3);background:#fff8f5;" onclick="pickType('salon')">
       <div class="oic">🪑</div>
       <div><div class="oname">صالة</div><div class="osub">طلب داخل المطعم — طباعة فوراً</div></div>
     </button>
-    <button class="otype" style="border-color:rgba(251,191,36,.4);" onclick="pickType('takeaway')">
+    <button class="otype" style="border-color:rgba(255,170,61,.3);background:#fff8f5;" onclick="pickType('takeaway')">
       <div class="oic">🥡</div>
       <div><div class="oname">سفري</div><div class="osub">الزبون يستلم — طباعة فوراً</div></div>
     </button>
-    <button class="otype" style="border-color:rgba(59,130,246,.4);" onclick="pickType('delivery')">
+    <button class="otype" style="border-color:rgba(255,107,61,.4);background:#fff5f0;" onclick="pickType('delivery')">
       <div class="oic">🏍️</div>
       <div><div class="oname">دلفري — توصيل</div><div class="osub">كابتن + معلومات الزبون</div></div>
     </button>
@@ -792,6 +863,7 @@ function enterApp(){
   document.getElementById('appPage').className='show';
   document.getElementById('restName').textContent=restData.name||'المطعم';
   renderMenu();renderCart();startListeners();initMenuManage();
+  showThemeSwitcher();
 }
 
 function startListeners(){
@@ -1419,6 +1491,70 @@ window.editItem=(ci,pi)=>{
   menu[ci].items[pi].name=newName;
   saveMenu();renderMList();if(activeCat===ci)renderMenu();toast('✅ تم تعديل الاسم');
 };
+
+
+// ── THEME SYSTEM ──
+const themes = {
+  dark: {bg:'#0a0a0f',panel:'#111118',panel2:'#18181f',line:'#252530',text:'#eeeef5',muted:'#666680',orange:'#ff6b3d',orange2:'#ffaa3d',splash:'linear-gradient(135deg,#0a0a0f,#1a0a05,#0a0a0f)',pimg:'linear-gradient(135deg,#1a0a05,#2d1208)'},
+  light: {bg:'#f5f5f5',panel:'#ffffff',panel2:'#fff5f0',line:'#ffe0d6',text:'#1a1a1a',muted:'#888888',orange:'#ff6b3d',orange2:'#ff9f3d',splash:'linear-gradient(135deg,#fff5f0,#ffe0d6,#fff5f0)',pimg:'linear-gradient(135deg,#ffe0d6,#ffd0b8)'},
+  ocean: {bg:'#0d1b2a',panel:'#112236',panel2:'#0d2040',line:'#1e3a5f',text:'#e0f0ff',muted:'#4a7fa5',orange:'#4fc3f7',orange2:'#80deea',splash:'linear-gradient(135deg,#0d1b2a,#0a2540,#0d1b2a)',pimg:'linear-gradient(135deg,#0a2040,#0d3060)'},
+  green: {bg:'#f0fdf4',panel:'#ffffff',panel2:'#dcfce7',line:'#bbf7d0',text:'#1a1a1a',muted:'#666',orange:'#16a34a',orange2:'#4ade80',splash:'linear-gradient(135deg,#f0fdf4,#dcfce7,#f0fdf4)',pimg:'linear-gradient(135deg,#dcfce7,#bbf7d0)'},
+  purple: {bg:'#faf5ff',panel:'#ffffff',panel2:'#f3e8ff',line:'#e9d5ff',text:'#1a1a1a',muted:'#777',orange:'#7c3aed',orange2:'#a855f7',splash:'linear-gradient(135deg,#faf5ff,#f3e8ff,#faf5ff)',pimg:'linear-gradient(135deg,#f3e8ff,#e9d5ff)'},
+  night: {bg:'#070d1a',panel:'#0d1630',panel2:'#0a1228',line:'#1e3a5f',text:'#cdd9f0',muted:'#4a6080',orange:'#60a5fa',orange2:'#93c5fd',splash:'linear-gradient(135deg,#070d1a,#0a1228,#070d1a)',pimg:'linear-gradient(135deg,#0a1228,#0d1840)'},
+};
+
+let currentTheme = localStorage.getItem('pos_theme') || 'light';
+
+function applyTheme(name) {
+  const t = themes[name] || themes.light;
+  const root = document.documentElement;
+  root.style.setProperty('--bg', t.bg);
+  root.style.setProperty('--panel', t.panel);
+  root.style.setProperty('--panel2', t.panel2);
+  root.style.setProperty('--line', t.line);
+  root.style.setProperty('--text', t.text);
+  root.style.setProperty('--muted', t.muted);
+  root.style.setProperty('--orange', t.orange);
+  root.style.setProperty('--orange2', t.orange2);
+  // Update splash
+  const splash = document.getElementById('splash');
+  if(splash) splash.style.background = t.splash;
+  // Update product images
+  document.querySelectorAll('.pimg').forEach(el => { if(!el.querySelector('img')) el.style.background = t.pimg; });
+  // Sync UI
+  document.querySelectorAll('.tc').forEach(el => el.classList.remove('on'));
+  const tc = document.getElementById('tc-' + name);
+  if(tc) tc.classList.add('on');
+  // Light/dark toggle
+  const lightThemes = ['light','green','purple'];
+  const isLight = lightThemes.includes(name);
+  document.getElementById('tl-light').classList.toggle('on', isLight);
+  document.getElementById('tl-dark').classList.toggle('on', !isLight);
+}
+
+window.setTheme = name => {
+  currentTheme = name;
+  localStorage.setItem('pos_theme', name);
+  applyTheme(name);
+};
+
+window.toggleTsPanel = () => {
+  document.getElementById('tsPanel').classList.toggle('open');
+};
+
+// Close panel when clicking outside
+document.addEventListener('click', e => {
+  const sw = document.getElementById('themeSwitcher');
+  if(sw && !sw.contains(e.target)) document.getElementById('tsPanel').classList.remove('open');
+});
+
+// Apply saved theme on load
+applyTheme(currentTheme);
+
+// Show switcher after login
+function showThemeSwitcher() {
+  document.getElementById('themeSwitcher').style.display = 'block';
+}
 
 // SW
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
