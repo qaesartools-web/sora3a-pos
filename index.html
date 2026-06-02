@@ -213,6 +213,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
 #ordersScreen{padding:10px;padding-bottom:60px;overflow-y:auto;}
 #ordersScreen::-webkit-scrollbar{width:0;}
 .sg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px;}
+@media(max-width:400px){.sg{grid-template-columns:repeat(2,1fr);}}
 .st{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 6px;text-align:center;}
 .sv{font-size:18px;font-weight:900;color:var(--orange);}
 .sl{font-size:10px;color:var(--muted);}
@@ -289,6 +290,17 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
 .miacts{display:flex;flex-direction:column;gap:4px;}
 .mibtn{border:none;border-radius:6px;padding:5px 8px;color:#fff;font-size:11px;cursor:pointer;}
 
+/* DESKTOP NAV */
+.desktop-nav{display:none;background:var(--panel2);border-bottom:1px solid var(--line);padding:0 16px;gap:4px;}
+@media(min-width:768px){
+  .desktop-nav{display:flex !important;}
+  .bnav{display:none;}
+  .pos{height:calc(100vh - 100px);}
+}
+.dnb{padding:12px 16px;background:transparent;border:none;border-bottom:3px solid transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s;white-space:nowrap;}
+.dnb.on{color:var(--orange);border-bottom-color:var(--orange);}
+.dnb:hover{color:var(--text);}
+
 /* TOAST */
 .toast{position:fixed;bottom:62px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--panel);border:1px solid var(--green);color:var(--green);border-radius:12px;padding:10px 18px;font-size:13px;font-weight:700;z-index:999;transition:transform .3s;white-space:nowrap;}
 .toast.on{transform:translateX(-50%) translateY(0);}
@@ -335,6 +347,12 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
     <button class="lout" onclick="doLogout()">خروج</button>
   </div>
 
+  <div class="desktop-nav" id="desktopNav">
+    <button class="dnb on" onclick="goTab('cashier')">🧾 الكاشير</button>
+    <button class="dnb" onclick="goTab('orders')">📋 الطلبات</button>
+    <button class="dnb" onclick="goTab('reports')">📊 التقارير</button>
+    <button class="dnb" onclick="goTab('menu')">⚙️ المنيو</button>
+  </div>
   <div class="content">
     <!-- CASHIER -->
     <div class="screen on" id="cashierScreen">
@@ -363,8 +381,11 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
     <div class="screen" id="ordersScreen">
       <div class="sg">
         <div class="st"><div class="sv" id="sAll">0</div><div class="sl">الكل</div></div>
-        <div class="st"><div class="sv" id="sActive">0</div><div class="sl">نشطة</div></div>
-        <div class="st"><div class="sv" id="sDone">0</div><div class="sl">مسلّمة</div></div>
+        <div class="st"><div class="sv" id="sActive" style="color:var(--yellow);">0</div><div class="sl">نشطة</div></div>
+        <div class="st"><div class="sv" id="sDone" style="color:var(--green);">0</div><div class="sl">مسلّمة</div></div>
+        <div class="st"><div class="sv" id="sSalon" style="color:var(--purple);">0</div><div class="sl">صالة</div></div>
+        <div class="st"><div class="sv" id="sTake" style="color:var(--yellow);">0</div><div class="sl">سفري</div></div>
+        <div class="st"><div class="sv" id="sDeliv" style="color:var(--blue);">0</div><div class="sl">دلفري</div></div>
       </div>
       <!-- Filter -->
       <div style="display:flex;gap:6px;padding:0 0 8px 0;overflow-x:auto;">
@@ -378,6 +399,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
 
     <!-- REPORTS -->
     <div class="screen" id="reportsScreen">
+      <!-- Date Filter -->
       <div class="rcard">
         <div class="rtitle">🗓️ الفترة الزمنية</div>
         <div class="drow">
@@ -390,22 +412,37 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
           <button class="pbtn" onclick="setPreset('month')">شهر</button>
           <button class="pbtn" onclick="setPreset('year')">سنة</button>
         </div>
+      </div>
+
+      <!-- Type Filter Tabs -->
+      <div style="display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;">
+        <button onclick="setRepType('all')" id="rt-all" style="flex-shrink:0;padding:7px 14px;border-radius:20px;border:none;background:var(--orange);color:#fff;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">📊 الكل</button>
+        <button onclick="setRepType('delivery')" id="rt-delivery" style="flex-shrink:0;padding:7px 14px;border-radius:20px;border:1px solid var(--line);background:transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">🏍️ دلفري</button>
+        <button onclick="setRepType('salon')" id="rt-salon" style="flex-shrink:0;padding:7px 14px;border-radius:20px;border:1px solid var(--line);background:transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">🪑 صالة</button>
+        <button onclick="setRepType('takeaway')" id="rt-takeaway" style="flex-shrink:0;padding:7px 14px;border-radius:20px;border:1px solid var(--line);background:transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">🥡 سفري</button>
+        <button onclick="setRepType('captains')" id="rt-captains" style="flex-shrink:0;padding:7px 14px;border-radius:20px;border:1px solid var(--line);background:transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">🏍️ الكباتن</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="rcard">
         <div class="rstats">
           <div class="rstat"><div class="rsv" id="repSales">0</div><div class="rsl">إجمالي المبيعات (د.ع)</div></div>
           <div class="rstat"><div class="rsv" id="repCount">0</div><div class="rsl">عدد الطلبات</div></div>
-          <div class="rstat"><div class="rsv" id="repDel">0</div><div class="rsl">مسلّمة / منجزة</div></div>
+          <div class="rstat"><div class="rsv" id="repDel">0</div><div class="rsl">مسلّمة</div></div>
           <div class="rstat"><div class="rsv" id="repAvg">0</div><div class="rsl">متوسط الطلب (د.ع)</div></div>
         </div>
         <button class="printbtn" onclick="printRep()">🖨️ طباعة التقرير</button>
       </div>
+
       <div id="repList"></div>
     </div>
 
     <!-- MENU -->
     <div class="screen" id="menuScreen">
       <div class="mtabs">
-        <button class="mtab on" id="mt1" onclick="showMTab('add')">➕ إضافة صنف</button>
+        <button class="mtab on" id="mt1" onclick="showMTab('add')">➕ إضافة</button>
         <button class="mtab" id="mt2" onclick="showMTab('list')">📋 الأصناف</button>
+        <button class="mtab" id="mt3" onclick="showMTab('cats')">🗂️ الفروع</button>
       </div>
       <div id="mAddSec">
         <div class="flbl">اسم الصنف *</div>
@@ -424,6 +461,15 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
         <button class="sivbtn" onclick="saveNItem()">✅ حفظ الصنف</button>
       </div>
       <div id="mListSec" style="display:none;"><div id="mItemsList"></div></div>
+      <div id="mCatsSec" style="display:none;">
+        <div class="flbl">اسم الفرع الجديد</div>
+        <input class="finp" id="nCatName" placeholder="مثال: مشويات">
+        <div class="flbl">إيموجي الفرع</div>
+        <input class="finp" id="nCatEmoji" placeholder="🥩" maxlength="2">
+        <button class="sivbtn" onclick="addNewCat()">✅ إضافة فرع</button>
+        <div style="margin-top:16px;font-size:13px;font-weight:700;margin-bottom:8px;">الفروع الحالية</div>
+        <div id="catsList"></div>
+      </div>
     </div>
   </div>
 
@@ -661,14 +707,6 @@ window.doInstall=()=>{
 // ── SPLASH ──
 window.addEventListener('fbReady',()=>{
   updateOnline();
-  // Show splash for 2.5 seconds
-  setTimeout(()=>{
-    document.getElementById('splash').classList.add('hide');
-    setTimeout(()=>{
-      document.getElementById('splash').style.display='none';
-      document.getElementById('loginPage').style.display='flex';
-    },600);
-  },2500);
 
   const fb=window._fb;
   fb.onAuthStateChanged(fb.auth,async user=>{
@@ -684,13 +722,36 @@ window.addEventListener('fbReady',()=>{
       }catch(e){console.error(e);await fb.signOut(fb.auth);}
     }else{
       restData=null;unsubs.forEach(u=>u&&u());unsubs=[];
-      document.getElementById('loginPage').style.display='flex';
-      document.getElementById('appPage').className='';
-      const btn=document.getElementById('loginBtn');btn.innerHTML='🔐 دخول';btn.disabled=false;
+      showLoginPage();
     }
   });
   document.getElementById('inPass').addEventListener('keypress',e=>{if(e.key==='Enter')doLogin();});
 });
+
+function showLoginPage(){
+  // Hide splash first
+  document.getElementById('splash').classList.add('hide');
+  setTimeout(()=>{
+    document.getElementById('splash').style.display='none';
+  },600);
+  document.getElementById('loginPage').style.display='flex';
+  document.getElementById('appPage').className='';
+  const btn=document.getElementById('loginBtn');
+  if(btn){btn.innerHTML='🔐 دخول';btn.disabled=false;}
+}
+
+// Show splash for 2.5s then show login if not logged in
+setTimeout(()=>{
+  if(document.getElementById('splash').style.display!=='none'){
+    document.getElementById('splash').classList.add('hide');
+    setTimeout(()=>{
+      document.getElementById('splash').style.display='none';
+      if(document.getElementById('loginPage').style.display==='none'&&document.getElementById('appPage').className===''){
+        document.getElementById('loginPage').style.display='flex';
+      }
+    },600);
+  }
+},2500);
 
 window.doLogin=async()=>{
   const email=document.getElementById('inEmail').value.trim().toLowerCase();
@@ -725,6 +786,8 @@ window.doLogout=async()=>{
 };
 
 function enterApp(){
+  document.getElementById('splash').classList.add('hide');
+  setTimeout(()=>{document.getElementById('splash').style.display='none';},600);
   document.getElementById('loginPage').style.display='none';
   document.getElementById('appPage').className='show';
   document.getElementById('restName').textContent=restData.name||'المطعم';
@@ -1014,19 +1077,36 @@ window.filterOrders=f=>{
   renderOrders();
 };
 
+function getOrderType(o){
+  if(o.orderType==='salon')return 'salon';
+  if(o.orderType==='takeaway')return 'takeaway';
+  if(o.orderType==='delivery'||o.captainId)return 'delivery';
+  return 'delivery'; // default old orders
+}
+
 function renderOrders(){
+  const salon=orders.filter(o=>getOrderType(o)==='salon');
+  const take=orders.filter(o=>getOrderType(o)==='takeaway');
+  const deliv=orders.filter(o=>getOrderType(o)==='delivery');
+  const active=orders.filter(o=>['pending','accepted','pickup','delivering'].includes(o.status));
+  const done=orders.filter(o=>o.status==='delivered');
+
   document.getElementById('sAll').textContent=orders.length;
-  document.getElementById('sActive').textContent=orders.filter(o=>['pending','accepted','pickup','delivering'].includes(o.status)).length;
-  document.getElementById('sDone').textContent=orders.filter(o=>o.status==='delivered').length;
+  document.getElementById('sActive').textContent=active.length;
+  document.getElementById('sDone').textContent=done.length;
+  document.getElementById('sSalon').textContent=salon.length;
+  document.getElementById('sTake').textContent=take.length;
+  document.getElementById('sDeliv').textContent=deliv.length;
 
   let fil=orders;
-  if(currentFilter==='delivery')fil=orders.filter(o=>o.orderType==='delivery'||o.captainId);
-  else if(currentFilter==='salon')fil=orders.filter(o=>o.orderType==='salon');
-  else if(currentFilter==='takeaway')fil=orders.filter(o=>o.orderType==='takeaway');
+  if(currentFilter==='delivery')fil=deliv;
+  else if(currentFilter==='salon')fil=salon;
+  else if(currentFilter==='takeaway')fil=take;
 
   const typeBadge=o=>{
-    if(o.orderType==='salon'||(!o.captainId&&!o.orderType))return`<span class="bdg bsal">🪑 صالة</span>`;
-    if(o.orderType==='takeaway')return`<span class="bdg bsfr">🥡 سفري</span>`;
+    const t=getOrderType(o);
+    if(t==='salon')return`<span class="bdg bsal">🪑 صالة</span>`;
+    if(t==='takeaway')return`<span class="bdg bsfr">🥡 سفري</span>`;
     return`<span class="bdg bdlv">🏍️ دلفري</span>`;
   };
   const stBadge={pending:'bp',accepted:'ba',pickup:'br',delivering:'br',delivered:'bd',cancelled:'bc'};
@@ -1035,7 +1115,7 @@ function renderOrders(){
   document.getElementById('ordersList').innerHTML=fil.length?fil.map(o=>`
     <div class="ocard">
       <div class="orow"><span class="oid">${o.id.substring(0,6).toUpperCase()}</span><span class="otime">${o.createdAt||''}</span></div>
-      ${typeBadge(o)}
+      <div style="margin-bottom:4px;">${typeBadge(o)}</div>
       ${o.customer?`<div class="oinfo">👤 ${o.customer} • 📞 ${o.phone||''}</div>`:''}
       ${o.address?`<div class="oinfo">📍 ${o.address}</div>`:''}
       <div class="oinfo">💰 ${fmt(o.value)} د.ع${o.fee?` + ${fmt(o.fee)} توصيل`:''}</div>
@@ -1043,7 +1123,7 @@ function renderOrders(){
         <span class="bdg ${stBadge[o.status]||'bp'}">${stLabel[o.status]||o.status}</span>
         <span style="font-size:11px;color:var(--muted)">${o.captainName||''}</span>
       </div>
-      ${['pending','accepted'].includes(o.status)&&(o.orderType==='delivery'||o.captainId)?`<button class="chgbtn" onclick="openChangeCapForOrder('${o.id}')">🔄 تغيير الكابتن</button>`:''}
+      ${['pending','accepted'].includes(o.status)&&getOrderType(o)==='delivery'?`<button class="chgbtn" onclick="openChangeCapForOrder('${o.id}')">🔄 تغيير الكابتن</button>`:''}
     </div>`).join(''):'<div style="text-align:center;color:var(--muted);padding:24px">لا توجد طلبات</div>';
 }
 
@@ -1064,6 +1144,20 @@ window.openChangeCapForOrder=orderId=>{
 };
 
 // ── REPORTS ──
+let repType='all';
+
+window.setRepType=type=>{
+  repType=type;
+  ['all','delivery','salon','takeaway','captains'].forEach(t=>{
+    const el=document.getElementById('rt-'+t);
+    if(!el)return;
+    el.style.background=t===type?'var(--orange)':'transparent';
+    el.style.color=t===type?'#fff':'var(--muted)';
+    el.style.border=t===type?'none':'1px solid var(--line)';
+  });
+  renderRep();
+};
+
 window.setPreset=p=>{
   const t=new Date(),f=new Date();
   if(p==='today')f.setHours(0,0,0,0);
@@ -1075,18 +1169,61 @@ window.setPreset=p=>{
   renderRep();
 };
 
-window.renderRep=()=>{
+function getRepOrders(){
   const from=document.getElementById('repFrom')?.value;
   const to=document.getElementById('repTo')?.value;
   const start=from?new Date(from+'T00:00:00').getTime():0;
   const end=to?new Date(to+'T00:00:00').getTime()+86400000:Infinity;
-  const fil=orders.filter(o=>{const t=o.createdAtMs||0;return t>=start&&t<end;});
-  const done=fil.filter(o=>['delivered','salon','takeaway'].includes(o.status)||o.orderType==='salon'||o.orderType==='takeaway');
+  let fil=orders.filter(o=>{const t=o.createdAtMs||0;return t>=start&&t<end;});
+  if(repType==='delivery')fil=fil.filter(o=>getOrderType(o)==='delivery');
+  else if(repType==='salon')fil=fil.filter(o=>getOrderType(o)==='salon');
+  else if(repType==='takeaway')fil=fil.filter(o=>getOrderType(o)==='takeaway');
+  return fil;
+}
+
+window.renderRep=()=>{
+  const fil=getRepOrders();
+  const done=fil.filter(o=>o.status==='delivered'||getOrderType(o)==='salon'||getOrderType(o)==='takeaway');
   const total=fil.reduce((s,o)=>s+(o.value||0),0);
   document.getElementById('repSales').textContent=fmt(total);
   document.getElementById('repCount').textContent=fil.length;
   document.getElementById('repDel').textContent=done.length;
   document.getElementById('repAvg').textContent=fmt(fil.length?Math.round(total/fil.length):0);
+
+  // Captain report
+  if(repType==='captains'){
+    const capMap={};
+    orders.filter(o=>{
+      const from=document.getElementById('repFrom')?.value;
+      const to=document.getElementById('repTo')?.value;
+      const start=from?new Date(from+'T00:00:00').getTime():0;
+      const end=to?new Date(to+'T00:00:00').getTime()+86400000:Infinity;
+      return(o.createdAtMs||0)>=start&&(o.createdAtMs||0)<end;
+    }).forEach(o=>{
+      if(!o.captainId)return;
+      if(!capMap[o.captainId])capMap[o.captainId]={name:o.captainName||o.captainId,total:0,count:0,delivered:0};
+      capMap[o.captainId].count++;
+      capMap[o.captainId].total+=(o.value||0);
+      if(o.status==='delivered')capMap[o.captainId].delivered++;
+    });
+    const caps=Object.values(capMap).sort((a,b)=>b.delivered-a.delivered);
+    document.getElementById('repList').innerHTML=caps.length?caps.map(cap=>`
+      <div style="background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--orange2));display:flex;align-items:center;justify-content:center;font-size:16px;">🏍️</div>
+          <div style="flex:1"><div style="font-weight:700;font-size:14px;">${cap.name}</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center;">
+          <div style="background:var(--panel2);border-radius:8px;padding:8px;"><div style="font-size:16px;font-weight:900;color:var(--blue);">${cap.count}</div><div style="font-size:10px;color:var(--muted);">طلبات</div></div>
+          <div style="background:var(--panel2);border-radius:8px;padding:8px;"><div style="font-size:16px;font-weight:900;color:var(--green);">${cap.delivered}</div><div style="font-size:10px;color:var(--muted);">مسلّمة</div></div>
+          <div style="background:var(--panel2);border-radius:8px;padding:8px;"><div style="font-size:14px;font-weight:900;color:var(--orange2);">${fmt(cap.total)}</div><div style="font-size:10px;color:var(--muted);">د.ع</div></div>
+        </div>
+      </div>`).join(''):'<div style="text-align:center;color:var(--muted);padding:18px;">لا توجد بيانات</div>';
+    return;
+  }
+
+  const typeIcon=o=>getOrderType(o)==='salon'?'🪑':getOrderType(o)==='takeaway'?'🥡':'🏍️';
+  const typeLabel=o=>getOrderType(o)==='salon'?'صالة':getOrderType(o)==='takeaway'?'سفري':'دلفري';
   document.getElementById('repList').innerHTML=fil.length?fil.map(o=>`
     <div style="background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px;margin-bottom:7px;">
       <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
@@ -1095,7 +1232,7 @@ window.renderRep=()=>{
       </div>
       ${o.customer?`<div style="font-size:11px;color:var(--muted);">👤 ${o.customer}</div>`:''}
       <div style="display:flex;justify-content:space-between;margin-top:4px;">
-        <span style="font-size:11px;">${o.orderType==='salon'?'🪑':o.orderType==='takeaway'?'🥡':'🏍️'} ${o.orderType||'دلفري'}</span>
+        <span style="font-size:11px;">${typeIcon(o)} ${typeLabel(o)}</span>
         <span style="font-size:12px;font-weight:700;color:var(--orange2);">${fmt(o.value||0)} د.ع</span>
       </div>
     </div>`).join(''):'<div style="text-align:center;color:var(--muted);padding:18px;">لا توجد طلبات</div>';
@@ -1104,18 +1241,47 @@ window.renderRep=()=>{
 window.printRep=()=>{
   const from=document.getElementById('repFrom')?.value||'—';
   const to=document.getElementById('repTo')?.value||'—';
-  const html=`<html><head><meta charset="UTF-8"><style>body{font-family:Tajawal,Arial,sans-serif;direction:rtl;padding:16px;}
-  h2{text-align:center;margin-bottom:8px;}.row{display:flex;justify-content:space-between;font-size:13px;margin:6px 0;}.div{border-top:1px dashed #000;margin:8px 0;}.big{font-size:18px;font-weight:900;}
+  const typeNames={all:'الكل',delivery:'دلفري',salon:'صالة',takeaway:'سفري',captains:'الكباتن'};
+  const fil=getRepOrders();
+  let detailsHTML='';
+  if(repType==='captains'){
+    const capMap={};
+    fil.forEach(o=>{
+      if(!o.captainId)return;
+      if(!capMap[o.captainId])capMap[o.captainId]={name:o.captainName||o.captainId,count:0,delivered:0,total:0};
+      capMap[o.captainId].count++;capMap[o.captainId].total+=(o.value||0);
+      if(o.status==='delivered')capMap[o.captainId].delivered++;
+    });
+    detailsHTML=Object.values(capMap).map(cap=>`
+      <div class="row"><span>🏍️ ${cap.name}</span><span>${cap.delivered} مسلّمة / ${cap.count} طلب</span></div>`).join('');
+  }else{
+    detailsHTML=fil.map(o=>`
+      <div class="row"><span>${o.id.substring(0,6).toUpperCase()} ${o.createdAt||''}</span><span>${fmt(o.value||0)} د.ع</span></div>`).join('');
+  }
+  const html=`<html><head><meta charset="UTF-8"><style>
+  body{font-family:Tajawal,Arial,sans-serif;direction:rtl;padding:16px;}
+  h2{text-align:center;margin-bottom:4px;font-size:16px;}
+  .sub{text-align:center;font-size:12px;color:#555;margin-bottom:10px;}
+  .row{display:flex;justify-content:space-between;font-size:12px;margin:4px 0;border-bottom:1px solid #eee;padding-bottom:4px;}
+  .div{border-top:2px dashed #000;margin:8px 0;}
+  .big{font-size:16px;font-weight:900;}
+  .stat{display:inline-block;background:#f5f5f5;border-radius:8px;padding:6px 12px;margin:4px;font-size:12px;font-weight:700;}
   </style></head><body>
-  <h2>📊 تقرير مبيعات — ${restData?.name||''}</h2><div class="div"></div>
+  <h2>📊 تقرير ${typeNames[repType]}</h2>
+  <div class="sub">${restData?.name||''}</div>
+  <div class="div"></div>
   <div class="row"><span>من:</span><span>${from}</span></div>
   <div class="row"><span>إلى:</span><span>${to}</span></div>
   <div class="div"></div>
-  <div class="row"><span>عدد الطلبات:</span><span>${document.getElementById('repCount').textContent}</span></div>
-  <div class="row"><span>المنجزة:</span><span>${document.getElementById('repDel').textContent}</span></div>
-  <div class="row"><span>متوسط الطلب:</span><span>${document.getElementById('repAvg').textContent} د.ع</span></div>
+  <div style="text-align:center;margin:8px 0;">
+    <span class="stat">📦 ${document.getElementById('repCount').textContent} طلب</span>
+    <span class="stat">✅ ${document.getElementById('repDel').textContent} مسلّمة</span>
+    <span class="stat">⌀ ${document.getElementById('repAvg').textContent} د.ع</span>
+  </div>
   <div class="div"></div>
-  <div class="row big"><span>إجمالي المبيعات:</span><span>${document.getElementById('repSales').textContent} د.ع</span></div>
+  ${detailsHTML}
+  <div class="div"></div>
+  <div class="row big"><span>💰 الإجمالي:</span><span>${document.getElementById('repSales').textContent} د.ع</span></div>
   </body></html>`;
   printHTML(html);
 };
@@ -1124,9 +1290,10 @@ window.printRep=()=>{
 window.showMTab=tab=>{
   document.getElementById('mAddSec').style.display=tab==='add'?'block':'none';
   document.getElementById('mListSec').style.display=tab==='list'?'block':'none';
-  document.getElementById('mt1').classList.toggle('on',tab==='add');
-  document.getElementById('mt2').classList.toggle('on',tab==='list');
+  document.getElementById('mCatsSec').style.display=tab==='cats'?'block':'none';
+  ['mt1','mt2','mt3'].forEach((id,i)=>document.getElementById(id)?.classList.toggle('on',['add','list','cats'][i]===tab));
   if(tab==='list')renderMList();
+  if(tab==='cats')renderCatsList();
 };
 window.initMenuManage=()=>{
   nVars=[{name:'وحدة',price:0}];nImgData='';
@@ -1170,6 +1337,7 @@ window.renderMList=()=>{
       <div class="miimg">${p.img?`<img src="${p.img}">`:`<span>${p.emoji}</span>`}</div>
       <div class="miinfo"><div class="miname">${p.name}</div><div class="micat">${p.emoji} ${p.catName}</div><div class="miprice">${p.variants.map(v=>fmt(v.price)+' د.ع').join(' / ')}</div></div>
       <div class="miacts">
+        <button class="mibtn" style="background:var(--orange);" onclick="editItem(${p.ci},${p.pi})">✏️</button>
         <label class="mibtn" style="background:var(--blue);cursor:pointer;">📷<input type="file" accept="image/*" style="display:none;" onchange="updImg(${p.ci},${p.pi},this)"></label>
         <button class="mibtn" style="background:var(--red);" onclick="delItem(${p.ci},${p.pi})">🗑️</button>
       </div>
@@ -1190,8 +1358,66 @@ window.delItem=(ci,pi)=>{
 window.goTab=tab=>{
   ['cashier','orders','reports','menu'].forEach(t=>document.getElementById(t+'Screen').classList.toggle('on',t===tab));
   ['nb1','nb2','nb3','nb4'].forEach((id,i)=>document.getElementById(id).classList.toggle('on',i===['cashier','orders','reports','menu'].indexOf(tab)));
+  // Sync desktop nav
+  document.querySelectorAll('.dnb').forEach(b=>b.classList.remove('on'));
+  const tabs=['cashier','orders','reports','menu'];
+  const dbtns=document.querySelectorAll('.dnb');
+  if(dbtns[tabs.indexOf(tab)])dbtns[tabs.indexOf(tab)].classList.add('on');
   if(tab==='reports')renderRep();
   if(tab==='menu')initMenuManage();
+};
+
+
+// ── CATEGORIES MANAGEMENT ──
+window.addNewCat=()=>{
+  const name=document.getElementById('nCatName').value.trim();
+  const emoji=document.getElementById('nCatEmoji').value.trim()||'🍽️';
+  if(!name){toast('⚠️ أدخل اسم الفرع');return;}
+  menu.push({cat:name,emoji,items:[]});
+  saveMenu();toast('✅ تم إضافة فرع: '+name);
+  document.getElementById('nCatName').value='';
+  document.getElementById('nCatEmoji').value='';
+  renderCatsList();renderMenu();
+  const sel=document.getElementById('nCat');
+  if(sel)sel.innerHTML=menu.map((c,i)=>`<option value="${i}">${c.emoji} ${c.cat}</option>`).join('');
+};
+
+window.renderCatsList=()=>{
+  document.getElementById('catsList').innerHTML=menu.map((cat,ci)=>`
+    <div style="background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px;">
+      <div style="font-size:24px;">${cat.emoji}</div>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:13px;">${cat.cat}</div>
+        <div style="font-size:11px;color:var(--muted);">${cat.items.length} صنف</div>
+      </div>
+      <button onclick="renameCat(${ci})" style="background:var(--blue);border:none;border-radius:6px;padding:6px 10px;color:#fff;font-size:11px;cursor:pointer;">✏️ تعديل</button>
+      ${menu.length>1?`<button onclick="delCat(${ci})" style="background:var(--red);border:none;border-radius:6px;padding:6px 10px;color:#fff;font-size:11px;cursor:pointer;">🗑️</button>`:''}
+    </div>`).join('');
+};
+
+window.renameCat=(ci)=>{
+  const newName=prompt('اسم الفرع الجديد:',menu[ci].cat);
+  if(!newName)return;
+  const newEmoji=prompt('إيموجي الفرع:',menu[ci].emoji);
+  menu[ci].cat=newName;
+  menu[ci].emoji=newEmoji||menu[ci].emoji;
+  saveMenu();renderCatsList();renderMenu();toast('✅ تم تعديل الفرع');
+};
+
+window.delCat=(ci)=>{
+  if(!confirm(`حذف فرع "${menu[ci].cat}" وكل أصنافه؟`))return;
+  menu.splice(ci,1);
+  if(activeCat>=menu.length)activeCat=0;
+  saveMenu();renderCatsList();renderMenu();toast('🗑️ تم حذف الفرع');
+};
+
+// ── EDIT ITEM ──
+window.editItem=(ci,pi)=>{
+  const item=menu[ci].items[pi];
+  const newName=prompt('اسم الصنف:',item.name);
+  if(!newName)return;
+  menu[ci].items[pi].name=newName;
+  saveMenu();renderMList();if(activeCat===ci)renderMenu();toast('✅ تم تعديل الاسم');
 };
 
 // SW
