@@ -259,7 +259,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
 .confbtn:disabled{opacity:.4;cursor:not-allowed;}
 
 /* ── ORDERS SCREEN ── */
-#ordersScreen{padding:10px;padding-bottom:60px;overflow-y:auto;}
+#ordersScreen{padding:10px;padding-bottom:60px;overflow-y:auto;display:flex;flex-direction:column;}
 #ordersScreen::-webkit-scrollbar{width:0;}
 .sg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px;}
 @media(max-width:400px){.sg{grid-template-columns:repeat(2,1fr);}}
@@ -450,22 +450,22 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
 
     <!-- ORDERS -->
     <div class="screen" id="ordersScreen">
-      <div class="sg">
+      <div class="sg" style="grid-template-columns:repeat(3,1fr);">
         <div class="st"><div class="sv" id="sAll">0</div><div class="sl">الكل</div></div>
-        <div class="st"><div class="sv" id="sActive" style="color:var(--yellow);">0</div><div class="sl">نشطة</div></div>
-        <div class="st"><div class="sv" id="sDone" style="color:var(--green);">0</div><div class="sl">مسلّمة</div></div>
-        <div class="st"><div class="sv" id="sSalon" style="color:var(--purple);">0</div><div class="sl">صالة</div></div>
-        <div class="st"><div class="sv" id="sTake" style="color:var(--yellow);">0</div><div class="sl">سفري</div></div>
-        <div class="st"><div class="sv" id="sDeliv" style="color:var(--blue);">0</div><div class="sl">دلفري</div></div>
+        <div class="st"><div class="sv" id="sActive" style="color:var(--yellow);">0</div><div class="sl">🟡 نشطة</div></div>
+        <div class="st"><div class="sv" id="sDone" style="color:var(--green);">0</div><div class="sl">✅ مسلّمة</div></div>
+        <div class="st"><div class="sv" id="sDeliv" style="color:var(--blue);">0</div><div class="sl">🏍️ دلفري</div></div>
+        <div class="st"><div class="sv" id="sSalon" style="color:var(--purple);">0</div><div class="sl">🪑 صالة</div></div>
+        <div class="st"><div class="sv" id="sTake" style="color:var(--yellow);">0</div><div class="sl">🥡 سفري</div></div>
       </div>
       <!-- Filter -->
-      <div style="display:flex;gap:6px;padding:0 0 8px 0;overflow-x:auto;">
-        <button onclick="filterOrders('all')" id="f-all" style="flex-shrink:0;padding:5px 12px;border-radius:20px;border:1px solid var(--orange);background:var(--orange);color:#fff;font-family:'Tajawal',sans-serif;font-size:11px;cursor:pointer;">الكل</button>
-        <button onclick="filterOrders('delivery')" id="f-delivery" style="flex-shrink:0;padding:5px 12px;border-radius:20px;border:1px solid var(--line);background:transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:11px;cursor:pointer;">🏍️ دلفري</button>
-        <button onclick="filterOrders('salon')" id="f-salon" style="flex-shrink:0;padding:5px 12px;border-radius:20px;border:1px solid var(--line);background:transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:11px;cursor:pointer;">🪑 صالة</button>
-        <button onclick="filterOrders('takeaway')" id="f-takeaway" style="flex-shrink:0;padding:5px 12px;border-radius:20px;border:1px solid var(--line);background:transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:11px;cursor:pointer;">🥡 سفري</button>
+      <div style="display:flex;gap:6px;padding:0 0 10px 0;overflow-x:auto;flex-shrink:0;">
+        <button onclick="filterOrders('all')" id="f-all" style="flex-shrink:0;padding:6px 14px;border-radius:20px;border:none;background:var(--orange);color:#fff;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">📋 الكل</button>
+        <button onclick="filterOrders('delivery')" id="f-delivery" style="flex-shrink:0;padding:6px 14px;border-radius:20px;border:1.5px solid var(--line);background:transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">🏍️ دلفري</button>
+        <button onclick="filterOrders('salon')" id="f-salon" style="flex-shrink:0;padding:6px 14px;border-radius:20px;border:1.5px solid var(--line);background:transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">🪑 صالة</button>
+        <button onclick="filterOrders('takeaway')" id="f-takeaway" style="flex-shrink:0;padding:6px 14px;border-radius:20px;border:1.5px solid var(--line);background:transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">🥡 سفري</button>
       </div>
-      <div id="ordersList"></div>
+      <div id="ordersList" style="flex:1;overflow-y:auto;"></div>
     </div>
 
     <!-- REPORTS -->
@@ -1141,9 +1141,17 @@ window.filterOrders=f=>{
   ['all','delivery','salon','takeaway'].forEach(n=>{
     const el=document.getElementById('f-'+n);
     if(el){
-      el.style.background=n===f?'var(--orange)':'transparent';
-      el.style.color=n===f?'#fff':'var(--muted)';
-      el.style.borderColor=n===f?'var(--orange)':'var(--line)';
+      if(n===f){
+        el.style.background='var(--orange)';
+        el.style.color='#fff';
+        el.style.border='none';
+        el.style.fontWeight='900';
+      }else{
+        el.style.background='transparent';
+        el.style.color='var(--muted)';
+        el.style.border='1.5px solid var(--line)';
+        el.style.fontWeight='700';
+      }
     }
   });
   renderOrders();
