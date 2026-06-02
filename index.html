@@ -14,9 +14,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0a0a0f; --panel:#111118; --panel2:#18181f; --line:#252530;
-  --text:#eeeef5; --muted:#666680; --orange:#ff6b3d; --orange2:#ffaa3d;
-  --green:#22c55e; --red:#ef4444; --blue:#3b82f6; --yellow:#fbbf24; --purple:#a855f7;
+  --bg:#f5f5f5; --panel:#ffffff; --panel2:#fff5f0; --line:#ffe0d6;
+  --text:#1a1a1a; --muted:#888888; --orange:#ff6b3d; --orange2:#ff9f3d;
+  --green:#16a34a; --red:#e11d48; --blue:#2563eb; --yellow:#d97706; --purple:#7c3aed;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;}
@@ -24,7 +24,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
 /* ── SPLASH SCREEN ── */
 #splash{
   position:fixed;inset:0;z-index:9999;
-  background:linear-gradient(135deg,#0a0a0f 0%,#1a0a05 50%,#0a0a0f 100%);
+  background:linear-gradient(135deg,#fff5f0 0%,#ffe0d6 50%,#fff5f0 100%);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   transition:opacity .6s ease;
 }
@@ -47,10 +47,11 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
   font-size:36px;font-weight:900;
   background:linear-gradient(135deg,var(--orange),var(--orange2));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  color:var(--orange);
   animation:fadeUp .8s ease both;
 }
 .splash-sub{
-  font-size:14px;color:var(--muted);margin-top:8px;
+  font-size:14px;color:#666;margin-top:8px;
   animation:fadeUp .8s ease .2s both;
 }
 .splash-dots{
@@ -75,8 +76,8 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
 /* ── LOGIN ── */
 #loginPage{
   height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
-  background:radial-gradient(ellipse at 20% 50%,rgba(255,107,61,.12),transparent 60%),
-             radial-gradient(ellipse at 80% 50%,rgba(255,170,61,.08),transparent 60%);
+  background:radial-gradient(ellipse at 20% 50%,rgba(255,107,61,.15),transparent 60%),
+             radial-gradient(ellipse at 80% 50%,rgba(255,170,61,.1),transparent 60%);
 }
 .lbox{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:32px 24px;width:100%;max-width:380px;box-shadow:0 30px 80px rgba(0,0,0,.5);}
 .licon{width:64px;height:64px;background:linear-gradient(135deg,var(--orange),var(--orange2));border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 16px;box-shadow:0 8px 30px rgba(255,107,61,.4);}
@@ -92,14 +93,14 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
 /* ── APP ── */
 #appPage{display:none;height:100vh;flex-direction:column;}
 #appPage.show{display:flex;}
-.topbar{background:var(--panel);border-bottom:1px solid var(--line);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.topbar{background:#ffffff;border-bottom:2px solid var(--line);box-shadow:0 2px 10px rgba(255,107,61,.1);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .tlogo{font-size:17px;font-weight:900;color:var(--orange);}
 .trest{font-size:11px;color:var(--muted);}
 .cdot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-left:4px;}
 .cdot.off{background:var(--red);}
 .lout{background:transparent;border:1px solid var(--line);color:var(--red);padding:5px 10px;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:11px;}
 .content{flex:1;overflow:hidden;display:flex;flex-direction:column;}
-.bnav{background:var(--panel);border-top:1px solid var(--line);display:flex;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom);}
+.bnav{background:#ffffff;border-top:2px solid var(--line);box-shadow:0 -2px 10px rgba(255,107,61,.08);display:flex;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom);}
 .nb{flex:1;padding:9px 4px;background:transparent;border:none;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;}
 .nb.on{color:var(--orange);}
 .ni{font-size:18px;}
@@ -117,7 +118,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
 .prods::-webkit-scrollbar{width:0;}
 .prod{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .15s;position:relative;}
 .prod:active{transform:scale(.96);}
-.pimg{height:75px;background:linear-gradient(135deg,#1a0a05,#2d1208);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;}
+.pimg{height:75px;background:linear-gradient(135deg,#ffe0d6,#ffd0b8);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;}
 .pimg img{width:100%;height:100%;object-fit:cover;}
 .pinfo{padding:7px 8px;}
 .pname{font-size:11px;font-weight:700;margin-bottom:2px;line-height:1.3;}
@@ -291,7 +292,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
 .mibtn{border:none;border-radius:6px;padding:5px 8px;color:#fff;font-size:11px;cursor:pointer;}
 
 /* DESKTOP NAV */
-.desktop-nav{display:none;background:var(--panel2);border-bottom:1px solid var(--line);padding:0 16px;gap:4px;}
+.desktop-nav{display:none;background:#fff5f0;border-bottom:2px solid var(--line);padding:0 16px;gap:4px;}
 @media(min-width:768px){
   .desktop-nav{display:flex !important;}
   .bnav{display:none;}
@@ -503,15 +504,15 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
     <div class="ctit">🚀 ترحيل الطلب</div>
     <div class="csub">اختر نوع الطلب</div>
     <div class="sumbox" id="sumBox"></div>
-    <button class="otype" style="border-color:rgba(168,85,247,.4);" onclick="pickType('salon')">
+    <button class="otype" style="border-color:rgba(255,107,61,.3);background:#fff8f5;" onclick="pickType('salon')">
       <div class="oic">🪑</div>
       <div><div class="oname">صالة</div><div class="osub">طلب داخل المطعم — طباعة فوراً</div></div>
     </button>
-    <button class="otype" style="border-color:rgba(251,191,36,.4);" onclick="pickType('takeaway')">
+    <button class="otype" style="border-color:rgba(255,170,61,.3);background:#fff8f5;" onclick="pickType('takeaway')">
       <div class="oic">🥡</div>
       <div><div class="oname">سفري</div><div class="osub">الزبون يستلم — طباعة فوراً</div></div>
     </button>
-    <button class="otype" style="border-color:rgba(59,130,246,.4);" onclick="pickType('delivery')">
+    <button class="otype" style="border-color:rgba(255,107,61,.4);background:#fff5f0;" onclick="pickType('delivery')">
       <div class="oic">🏍️</div>
       <div><div class="oname">دلفري — توصيل</div><div class="osub">كابتن + معلومات الزبون</div></div>
     </button>
