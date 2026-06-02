@@ -21,6 +21,54 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;}
 
+
+/* ── THEMES ── */
+.theme-dark{
+  --bg:#0a0a0f; --panel:#111118; --panel2:#18181f; --line:#252530;
+  --text:#eeeef5; --muted:#666680; --orange:#ff6b3d; --orange2:#ffaa3d;
+  --green:#22c55e; --red:#ef4444; --blue:#3b82f6; --yellow:#fbbf24; --purple:#a855f7;
+}
+.theme-light{
+  --bg:#f5f5f5; --panel:#ffffff; --panel2:#fff5f0; --line:#ffe0d6;
+  --text:#1a1a1a; --muted:#888888; --orange:#ff6b3d; --orange2:#ff9f3d;
+  --green:#16a34a; --red:#e11d48; --blue:#2563eb; --yellow:#d97706; --purple:#7c3aed;
+}
+.theme-ocean{
+  --bg:#0d1b2a; --panel:#112236; --panel2:#0d2040; --line:#1e3a5f;
+  --text:#e0f0ff; --muted:#4a7fa5; --orange:#4fc3f7; --orange2:#80deea;
+  --green:#4caf50; --red:#ef5350; --blue:#29b6f6; --yellow:#ffd54f; --purple:#ce93d8;
+}
+.theme-green{
+  --bg:#f0fdf4; --panel:#ffffff; --panel2:#dcfce7; --line:#bbf7d0;
+  --text:#1a1a1a; --muted:#666; --orange:#16a34a; --orange2:#4ade80;
+  --green:#15803d; --red:#e11d48; --blue:#2563eb; --yellow:#d97706; --purple:#7c3aed;
+}
+.theme-purple{
+  --bg:#faf5ff; --panel:#ffffff; --panel2:#f3e8ff; --line:#e9d5ff;
+  --text:#1a1a1a; --muted:#777; --orange:#7c3aed; --orange2:#a855f7;
+  --green:#16a34a; --red:#e11d48; --blue:#2563eb; --yellow:#d97706; --purple:#6d28d9;
+}
+.theme-night{
+  --bg:#070d1a; --panel:#0d1630; --panel2:#0a1228; --line:#1e3a5f;
+  --text:#cdd9f0; --muted:#4a6080; --orange:#60a5fa; --orange2:#93c5fd;
+  --green:#4ade80; --red:#f87171; --blue:#3b82f6; --yellow:#fbbf24; --purple:#c084fc;
+}
+
+/* Theme switcher */
+.theme-switcher{position:fixed;top:60px;left:10px;z-index:8000;display:none;}
+.ts-btn{width:40px;height:40px;border-radius:50%;border:2px solid var(--line);background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2);}
+.ts-panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:6px;display:none;box-shadow:0 8px 30px rgba(0,0,0,.3);min-width:160px;}
+.ts-panel.open{display:block;}
+.ts-title{font-size:11px;color:var(--muted);margin-bottom:8px;font-weight:700;}
+.ts-row{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
+.tc{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .2s;}
+.tc.on{border-color:var(--text);transform:scale(1.2);}
+.ts-sep{border-top:1px solid var(--line);margin:8px 0;}
+.ts-label{font-size:11px;color:var(--muted);margin-bottom:6px;}
+.ts-toggle{display:flex;background:var(--panel2);border-radius:20px;padding:2px;}
+.ts-toggle-btn{flex:1;padding:5px 8px;border-radius:18px;border:none;background:transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:11px;font-weight:700;cursor:pointer;}
+.ts-toggle-btn.on{background:var(--orange);color:#fff;}
+
 /* ── SPLASH SCREEN ── */
 #splash{
   position:fixed;inset:0;z-index:9999;
@@ -321,6 +369,28 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);hei
   </div>
 </div>
 
+
+<!-- THEME SWITCHER -->
+<div class="theme-switcher" id="themeSwitcher">
+  <button class="ts-btn" onclick="toggleTsPanel()">🎨</button>
+  <div class="ts-panel" id="tsPanel">
+    <div class="ts-title">🎨 لون التطبيق</div>
+    <div class="ts-row">
+      <div class="tc on" id="tc-dark" style="background:linear-gradient(135deg,#0a0a0f,#ff6b3d);" onclick="setTheme('dark')" title="داكن برتقالي"></div>
+      <div class="tc" id="tc-light" style="background:linear-gradient(135deg,#fff,#ff6b3d);" onclick="setTheme('light')" title="أبيض برتقالي"></div>
+      <div class="tc" id="tc-ocean" style="background:linear-gradient(135deg,#0d1b2a,#4fc3f7);" onclick="setTheme('ocean')" title="المحيط"></div>
+      <div class="tc" id="tc-green" style="background:linear-gradient(135deg,#f0fdf4,#16a34a);" onclick="setTheme('green')" title="أخضر"></div>
+      <div class="tc" id="tc-purple" style="background:linear-gradient(135deg,#faf5ff,#7c3aed);" onclick="setTheme('purple')" title="بنفسجي"></div>
+      <div class="tc" id="tc-night" style="background:linear-gradient(135deg,#070d1a,#60a5fa);" onclick="setTheme('night')" title="منتصف الليل"></div>
+    </div>
+    <div class="ts-sep"></div>
+    <div class="ts-label">فاتح / داكن</div>
+    <div class="ts-toggle">
+      <button class="ts-toggle-btn" id="tl-dark" onclick="setTheme('dark')">🌙 داكن</button>
+      <button class="ts-toggle-btn on" id="tl-light" onclick="setTheme('light')">☀️ فاتح</button>
+    </div>
+  </div>
+</div>
 <div id="offBanner">⚠️ غير متصل بالإنترنت — يعمل offline</div>
 <button id="installBtn" onclick="doInstall()">📲 تثبيت التطبيق</button>
 
@@ -793,6 +863,7 @@ function enterApp(){
   document.getElementById('appPage').className='show';
   document.getElementById('restName').textContent=restData.name||'المطعم';
   renderMenu();renderCart();startListeners();initMenuManage();
+  showThemeSwitcher();
 }
 
 function startListeners(){
@@ -1420,6 +1491,70 @@ window.editItem=(ci,pi)=>{
   menu[ci].items[pi].name=newName;
   saveMenu();renderMList();if(activeCat===ci)renderMenu();toast('✅ تم تعديل الاسم');
 };
+
+
+// ── THEME SYSTEM ──
+const themes = {
+  dark: {bg:'#0a0a0f',panel:'#111118',panel2:'#18181f',line:'#252530',text:'#eeeef5',muted:'#666680',orange:'#ff6b3d',orange2:'#ffaa3d',splash:'linear-gradient(135deg,#0a0a0f,#1a0a05,#0a0a0f)',pimg:'linear-gradient(135deg,#1a0a05,#2d1208)'},
+  light: {bg:'#f5f5f5',panel:'#ffffff',panel2:'#fff5f0',line:'#ffe0d6',text:'#1a1a1a',muted:'#888888',orange:'#ff6b3d',orange2:'#ff9f3d',splash:'linear-gradient(135deg,#fff5f0,#ffe0d6,#fff5f0)',pimg:'linear-gradient(135deg,#ffe0d6,#ffd0b8)'},
+  ocean: {bg:'#0d1b2a',panel:'#112236',panel2:'#0d2040',line:'#1e3a5f',text:'#e0f0ff',muted:'#4a7fa5',orange:'#4fc3f7',orange2:'#80deea',splash:'linear-gradient(135deg,#0d1b2a,#0a2540,#0d1b2a)',pimg:'linear-gradient(135deg,#0a2040,#0d3060)'},
+  green: {bg:'#f0fdf4',panel:'#ffffff',panel2:'#dcfce7',line:'#bbf7d0',text:'#1a1a1a',muted:'#666',orange:'#16a34a',orange2:'#4ade80',splash:'linear-gradient(135deg,#f0fdf4,#dcfce7,#f0fdf4)',pimg:'linear-gradient(135deg,#dcfce7,#bbf7d0)'},
+  purple: {bg:'#faf5ff',panel:'#ffffff',panel2:'#f3e8ff',line:'#e9d5ff',text:'#1a1a1a',muted:'#777',orange:'#7c3aed',orange2:'#a855f7',splash:'linear-gradient(135deg,#faf5ff,#f3e8ff,#faf5ff)',pimg:'linear-gradient(135deg,#f3e8ff,#e9d5ff)'},
+  night: {bg:'#070d1a',panel:'#0d1630',panel2:'#0a1228',line:'#1e3a5f',text:'#cdd9f0',muted:'#4a6080',orange:'#60a5fa',orange2:'#93c5fd',splash:'linear-gradient(135deg,#070d1a,#0a1228,#070d1a)',pimg:'linear-gradient(135deg,#0a1228,#0d1840)'},
+};
+
+let currentTheme = localStorage.getItem('pos_theme') || 'light';
+
+function applyTheme(name) {
+  const t = themes[name] || themes.light;
+  const root = document.documentElement;
+  root.style.setProperty('--bg', t.bg);
+  root.style.setProperty('--panel', t.panel);
+  root.style.setProperty('--panel2', t.panel2);
+  root.style.setProperty('--line', t.line);
+  root.style.setProperty('--text', t.text);
+  root.style.setProperty('--muted', t.muted);
+  root.style.setProperty('--orange', t.orange);
+  root.style.setProperty('--orange2', t.orange2);
+  // Update splash
+  const splash = document.getElementById('splash');
+  if(splash) splash.style.background = t.splash;
+  // Update product images
+  document.querySelectorAll('.pimg').forEach(el => { if(!el.querySelector('img')) el.style.background = t.pimg; });
+  // Sync UI
+  document.querySelectorAll('.tc').forEach(el => el.classList.remove('on'));
+  const tc = document.getElementById('tc-' + name);
+  if(tc) tc.classList.add('on');
+  // Light/dark toggle
+  const lightThemes = ['light','green','purple'];
+  const isLight = lightThemes.includes(name);
+  document.getElementById('tl-light').classList.toggle('on', isLight);
+  document.getElementById('tl-dark').classList.toggle('on', !isLight);
+}
+
+window.setTheme = name => {
+  currentTheme = name;
+  localStorage.setItem('pos_theme', name);
+  applyTheme(name);
+};
+
+window.toggleTsPanel = () => {
+  document.getElementById('tsPanel').classList.toggle('open');
+};
+
+// Close panel when clicking outside
+document.addEventListener('click', e => {
+  const sw = document.getElementById('themeSwitcher');
+  if(sw && !sw.contains(e.target)) document.getElementById('tsPanel').classList.remove('open');
+});
+
+// Apply saved theme on load
+applyTheme(currentTheme);
+
+// Show switcher after login
+function showThemeSwitcher() {
+  document.getElementById('themeSwitcher').style.display = 'block';
+}
 
 // SW
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
